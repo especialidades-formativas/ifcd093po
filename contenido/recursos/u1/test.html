@@ -10,7 +10,7 @@
 <header><div class="cod">IFCD093PO · Unidad 1 · U1-03 · Comprueba</div>
 <h1>Test de autoevaluación de la Unidad 1</h1></header>
 <main>
-<p>Diez preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+<p>Dieciséis preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
 repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
 <form id="f"></form>
 <button type="button" id="b">Corregir</button>
@@ -36,19 +36,37 @@ const P=[
   e:"En el libro, la versión vectorizada fue entre 16 y 20 veces más rápida que el bucle con solo 203 datos.",s:"1.2.1"},
  {q:"¿Qué hace pct_change(4) en una tabla trimestral?",
   o:["Calcula el crecimiento de cuatro trimestres seguidos sumados","Compara cada trimestre con el mismo trimestre del año anterior","Divide los datos en cuatro partes","Redondea a cuatro decimales"],c:1,
-  e:"Así se elimina el efecto de la estación: es el crecimiento anual.",s:"1.2.2"},
+  e:"Así se elimina el efecto de la estación: es el crecimiento anual.",s:"1.2.3"},
  {q:"¿Qué tienen en común todos los modelos de scikit-learn?",
   o:["Que solo sirven para regresión","La misma interfaz: se crean con sus opciones, se ajustan con fit(X, y) y se usan con predict(X)","Que no necesitan datos","Que dan siempre el mismo resultado"],c:1,
-  e:"Cambiar un modelo por otro es cambiar una línea.",s:"1.2.3"},
+  e:"Cambiar un modelo por otro es cambiar una línea.",s:"1.2.12"},
  {q:"Un modelo acierta casi todo en los datos con los que se entrenó. ¿Qué se puede concluir?",
   o:["Que funcionará igual con datos nuevos","Nada todavía: hay que evaluarlo con datos que no ha visto","Que es el mejor modelo posible","Que no hace falta una referencia"],c:1,
-  e:"Lo que importa es la generalización. Evaluar con los datos de entrenamiento da una falsa sensación de éxito.",s:"1.3.2"},
+  e:"Lo que importa es la generalización. Evaluar con los datos de entrenamiento da una falsa sensación de éxito.",s:"1.3.3"},
  {q:"Con datos temporales, ¿cómo se separan entrenamiento y prueba?",
   o:["Al azar","Se entrena con el pasado y se prueba con el futuro","Se usan los mismos datos para las dos cosas","Se entrena con el futuro y se prueba con el pasado"],c:1,
-  e:"Así se simula el uso real: el modelo solo conoce lo ocurrido antes de lo que predice.",s:"1.3.2"},
+  e:"Así se simula el uso real: el modelo solo conoce lo ocurrido antes de lo que predice.",s:"1.3.3"},
  {q:"En el caso del paro, la regla escrita a mano tuvo un error de 0,44 puntos y el modelo aprendido, de 0,45. ¿Qué conclusión saca el libro?",
   o:["Que el aprendizaje automático no sirve","Que hay que comparar siempre con una referencia y con lo que ya se sabe; los dos reducen un tercio el error de no prever nada","Que el modelo está mal programado","Que la regla escrita a mano es siempre mejor"],c:1,
-  e:"El modelo aprendido tiene la ventaja de que se actualiza volviendo a entrenarlo con datos recientes.",s:"1.3.3"}
+  e:"El modelo aprendido tiene la ventaja de que se actualiza volviendo a entrenarlo con datos recientes.",s:"1.3.6"},
+ {q:"\u00bfQu\u00e9 produce [p * 2 for p in paro if p > 7]?",
+  o:["Un número","Una lista con el doble de cada paro superior al 7 %","Un diccionario","Un error"],c:1,
+  e:"Es una comprensi\u00f3n de lista: recorre paro, filtra con if y transforma cada valor.",s:"1.1.5"},
+ {q:"\u00bfPara qu\u00e9 sirve el m\u00f3dulo logging en un programa que se ejecuta solo?",
+  o:["Para dibujar gráficos","Para registrar mensajes con niveles (información, aviso, error) en pantalla o en un fichero","Para acelerar el código","Para leer ficheros CSV"],c:1,
+  e:"A diferencia de print, distingue niveles y puede guardar un registro de lo ocurrido.",s:"1.1.7"},
+ {q:"Al pasar el precio de float64 a float32, el total de ventas de diciembre perdi\u00f3 los c\u00e9ntimos. \u00bfPor qu\u00e9?",
+  o:["Por un error de pandas","Porque un número de 32 bits solo guarda unas siete cifras significativas","Porque las categorías redondean","Porque faltaban datos"],c:1,
+  e:"Los importes de dinero deben conservar la precisi\u00f3n completa; las categor\u00edas no pierden nada.",s:"1.2.9"},
+ {q:"Un modelo entrenado solo con las personas m\u00e1s sanas obtuvo un AUC de 0,656, frente a 0,701 con una mitad al azar del mismo tama\u00f1o. \u00bfQu\u00e9 lo explica?",
+  o:["Que tenía menos datos","El sesgo de selección: no había visto a personas como muchas de las de la prueba","Un error de programación","Que el AUC no sirve"],c:1,
+  e:"Con el mismo n\u00famero de casos, la diferencia se debe a qu\u00e9 casos son, no a cu\u00e1ntos.",s:"1.3.4"},
+ {q:"En la curva de aprendizaje, la regresi\u00f3n log\u00edstica daba 0,656 en entrenamiento y 0,654 en validaci\u00f3n con 16 000 casos. \u00bfQu\u00e9 indica?",
+  o:["Que más datos la mejorarían mucho","Que ha llegado a su techo: hace falta un modelo más flexible, no más datos","Que sobreajusta","Que hay un error en los datos"],c:1,
+  e:"Si las dos curvas se juntan y no suben, el l\u00edmite es el modelo.",s:"1.3.8"},
+ {q:"\u00bfPor qu\u00e9 no se debe cargar con joblib un fichero de origen desconocido?",
+  o:["Porque ocupa mucho","Porque al cargarlo se puede ejecutar código","Porque cambia las predicciones","Porque solo funciona en Windows"],c:1,
+  e:"Adem\u00e1s, conviene usar la misma versi\u00f3n de scikit-learn con la que se guard\u00f3.",s:"1.3.9"}
 ];
 P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
 const f=document.getElementById('f');

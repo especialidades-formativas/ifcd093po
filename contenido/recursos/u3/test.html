@@ -10,7 +10,7 @@
 <header><div class="cod">IFCD093PO · Unidad 3 · U3-05 · Comprueba</div>
 <h1>Test de autoevaluación de la Unidad 3</h1></header>
 <main>
-<p>Doce preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+<p>Veinte preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
 repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
 <form id="f"></form>
 <button type="button" id="b">Corregir</button>
@@ -39,7 +39,7 @@ const P=[
   e:"Se queda con el inicio que da menor suma de distancias al cuadrado.",s:"3.3"},
  {q:"¿Qué algoritmo deja sin asignar los puntos aislados y no necesita fijar k?",
   o:["k-medias","DBSCAN","La mezcla gaussiana","El jerárquico de Ward"],c:1,
-  e:"DBSCAN define los grupos como regiones densas; con eps 0,5, su «ruido» fueron 90 grandes clientes.",s:"3.3"},
+  e:"DBSCAN define los grupos como regiones densas; con eps 0,5, su «ruido» fueron 91 grandes clientes.",s:"3.3"},
  {q:"Con los clientes RFM, el BIC de la mezcla gaussiana bajaba sin parar. ¿Por qué?",
   o:["Porque hay muchos grupos reales","Porque muchos clientes repiten el mismo valor de frecuencia (una, dos o tres compras) y algunas componentes se concentran sobre ellos sin varianza","Porque el BIC siempre baja","Porque faltan datos"],c:1,
   e:"Antes de elegir un algoritmo hay que mirar los datos; con el gasto continuo de los mayoristas el BIC tuvo su mínimo en tres componentes.",s:"3.3.1"},
@@ -54,7 +54,31 @@ const P=[
   e:"Es el caso del expositor de tartas y el portavelas: dos superventas que coinciden solo porque cada uno aparece en muchas facturas.",s:"3.6"},
  {q:"Dos de cada tres facturas con el despertador verde llevan también el rojo. ¿Qué medida es esa?",
   o:["El soporte","La confianza de la regla verde → rojo","El lift","La silueta"],c:1,
-  e:"Confianza = P(A y B)/P(A) = 0,67. El lift, 17,5, dice cuántas veces más probable es el rojo con el verde que en general.",s:"3.6"}
+  e:"Confianza = P(A y B)/P(A) = 0,67. El lift, 17,5, dice cuántas veces más probable es el rojo con el verde que en general.",s:"3.6"},
+ {q:"Con puntos uniformes, sin ning\u00fan grupo, k-medias con k = 4 obtuvo una silueta de 0,41. \u00bfQu\u00e9 se deduce?",
+  o:["Que hay cuatro grupos","Que una silueta moderada no prueba que existan grupos","Que la silueta está mal calculada","Que hay que usar k = 8"],c:1,
+  e:"k-medias siempre reparte los datos en k trozos compactos, existan grupos o no.",s:"3.2.1"},
+ {q:"En el diagrama de silueta con tres grupos, uno ten\u00eda 21 clientes con silueta negativa. \u00bfQu\u00e9 significa?",
+  o:["Que son los mejores clientes","Que esos clientes están más cerca de otro grupo que del suyo","Que faltan datos","Que el grupo es el más grande"],c:1,
+  e:"La media global, 0,259, escond\u00eda que ese grupo era d\u00e9bil.",s:"3.2.4"},
+ {q:"Sin escalar las variables RFM, k-medias separ\u00f3 a un centenar de grandes clientes del resto. \u00bfPor qu\u00e9?",
+  o:["Porque son los más recientes","Porque el importe, con valores mucho mayores, domina la distancia","Porque k-medias no admite RFM","Porque hay ruido"],c:1,
+  e:"Solo el logaritmo, que comprime la cola, dio cuatro grupos de tama\u00f1o comparable.",s:"3.3.3"},
+ {q:"Con enlace single, el jer\u00e1rquico dio grupos de 5875, 1, 1 y 1 clientes. \u00bfQu\u00e9 fen\u00f3meno es?",
+  o:["Sobreajuste","El encadenamiento: une un caso tras otro al grupo más grande","Un error de escala","La maldición de la dimensión"],c:1,
+  e:"Ward produce grupos de tama\u00f1o parecido; single sirve m\u00e1s para detectar casos raros.",s:"3.3.6"},
+ {q:"\u00bfQu\u00e9 par\u00e1metro principal tiene HDBSCAN?",
+  o:["La distancia eps","El tamaño mínimo de un grupo","El número de grupos","La tasa de aprendizaje"],c:1,
+  e:"Prueba todas las distancias a la vez y se queda con los grupos densos m\u00e1s estables.",s:"3.3.8"},
+ {q:"\u00bfQu\u00e9 hace un bosque de aislamiento?",
+  o:["Agrupa a los clientes","Corta los datos al azar y mide cuántos cortes hacen falta para aislar cada caso","Elimina variables","Calcula reglas de asociación"],c:1,
+  e:"Los casos raros se a\u00edslan con menos cortes.",s:"3.3.10"},
+ {q:"Con 100 vecinos, Isomap perdi\u00f3 el orden del rollo suizo (0,172). \u00bfPor qu\u00e9?",
+  o:["Por falta de datos","Por los atajos entre vueltas del rollo que quedan conectadas","Porque t-SNE es mejor","Porque el rollo tiene ruido"],c:1,
+  e:"Con 5 o 10 vecinos lo despleg\u00f3 por completo.",s:"3.5.2"},
+ {q:"Recomendar seg\u00fan la confianza con lo que hay en la cesta acert\u00f3 el 38 % de las veces; los m\u00e1s vendidos, el 9,6 %. \u00bfQu\u00e9 principio lo explica?",
+  o:["Lo popular siempre gana","Lo que predice una cesta concreta es la asociación, no la popularidad","Las reglas sobreajustan","Hay pocos productos"],c:1,
+  e:"Es la misma idea que el lift: lo popular est\u00e1 en muchas cestas, pero no informa de esta.",s:"3.6.6"}
 ];
 P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
 const f=document.getElementById('f');

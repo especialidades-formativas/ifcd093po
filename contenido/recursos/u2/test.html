@@ -10,7 +10,7 @@
 <header><div class="cod">IFCD093PO · Unidad 2 · U2-05 · Comprueba</div>
 <h1>Test de autoevaluación de la Unidad 2</h1></header>
 <main>
-<p>Doce preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+<p>Veinte preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
 repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
 <form id="f"></form>
 <button type="button" id="b">Corregir</button>
@@ -42,7 +42,7 @@ const P=[
   e:"Los coeficientes indican asociaciones, no causas, y algunos pueden parecer contradictorios.",s:"2.3.1"},
  {q:"Para prever las ventas de mañana, ¿qué variables se pueden usar?",
   o:["Las ventas de mañana","Solo lo que se sabe la víspera: ventas pasadas, medias móviles y el calendario","Cualquier columna de la tabla","Las ventas de la semana siguiente"],c:1,
-  e:"Usar información del futuro daría un error muy pequeño en la prueba y un modelo inútil en la realidad.",s:"2.3.2"},
+  e:"Usar información del futuro daría un error muy pequeño en la prueba y un modelo inútil en la realidad.",s:"2.3.5"},
  {q:"El árbol sin límite de profundidad acertó el 100 % en entrenamiento y tuvo el peor AUC en prueba (0,73). ¿Por qué?",
   o:["Por un error del programa","Porque memorizó los datos de entrenamiento: sobreajuste","Porque los árboles no sirven para clasificar","Porque le faltaban datos de entrenamiento"],c:1,
   e:"El árbol de profundidad 3, con ocho hojas, generalizó mucho mejor y además se puede leer.",s:"2.4.1"},
@@ -52,9 +52,33 @@ const P=[
  {q:"¿Qué mide la importancia por permutación?",
   o:["Cuántas veces aparece una variable en el árbol","Cuánto empeora el modelo en prueba al barajar los valores de una variable","La correlación entre dos variables","El tiempo de entrenamiento"],c:1,
   e:"Sin el valor de página, el AUC del bosque caía 27 puntos; el resto de variables apenas contaban.",s:"2.5"},
- {q:"En las ventas, el bosque aleatorio redujo el error medio de 12 410 £ a 10 360 £. ¿Qué no consiguió?",
+ {q:"En las ventas, el bosque aleatorio redujo el error medio de 12 060 £ a 10 080 £. ¿Qué no consiguió?",
   o:["Seguir el ciclo semanal","Anticipar los picos de un solo día, como el de 200 900 £","Mejorar a la regresión lineal","Superar a la referencia"],c:1,
-  e:"Una previsión útil para planificar personal y existencias no lo es necesariamente para comprometer cifras día a día.",s:"2.5.1"}
+  e:"Una previsión útil para planificar personal y existencias no lo es necesariamente para comprometer cifras día a día.",s:"2.5.6"},
+ {q:"Con 5000 variables de ruido, elegir las 20 mejores con todos los datos y despu\u00e9s validar dio un 79,5 % de acierto. \u00bfQu\u00e9 pas\u00f3?",
+  o:["El modelo es excelente","Fuga de información: la selección vio los datos de validación","El ruido tenía señal","La validación cruzada no funciona"],c:1,
+  e:"Dentro del pipeline, el acierto volvi\u00f3 al 51 %, el del azar.",s:"2.1.3"},
+ {q:"El AUC en prueba fue 0,941 con un intervalo bootstrap de 0,897 a 0,978. \u00bfQu\u00e9 significa?",
+  o:["Que el AUC es exactamente 0,941","Que con otra muestra de 91 pacientes el AUC podría variar en ese rango","Que el modelo está mal calibrado","Que hay que usar más árboles"],c:1,
+  e:"Con muestras peque\u00f1as, las diferencias entre modelos deben superar esa incertidumbre.",s:"2.2.4"},
+ {q:"El Bayes ingenuo daba de media un 86,8 % de probabilidad de compra cuando compra el 15,5 %. \u00bfQu\u00e9 le pasa?",
+  o:["Ordena mal los casos","Está mal calibrado: sus probabilidades no se corresponden con las frecuencias reales","Tiene pocas variables","Sobreajusta"],c:1,
+  e:"La calibraci\u00f3n isot\u00f3nica corrigi\u00f3 la escala y baj\u00f3 el Brier de 0,717 a 0,116.",s:"2.2.6"},
+ {q:"Contactando con el 10 % de las visitas m\u00e1s probables se llega al 50 % de las compras. \u00bfCu\u00e1l es el lift en ese punto?",
+  o:["0,5","5","10","50"],c:1,
+  e:"Lift = 0,50 / 0,10 = 5: cinco veces m\u00e1s que eligiendo al azar.",s:"2.2.9"},
+ {q:"Al quitar las variables de sexo y nacionalidad del modelo de cr\u00e9dito, \u00bfdesaparece cualquier posible discriminaci\u00f3n?",
+  o:["Sí, siempre","No: otras variables pueden actuar como sustitutas, y hay que medir el efecto por grupos","Sí, si el AUC no cambia","Solo con árboles"],c:1,
+  e:"Adem\u00e1s, igualar el rechazo y reflejar el riesgo observado son criterios distintos que no se pueden cumplir a la vez.",s:"2.3.3"},
+ {q:"En la descomposici\u00f3n STL de las ventas, \u00bfqu\u00e9 componente tuvo m\u00e1s varianza?",
+  o:["La tendencia","El ciclo semanal","El resto","Ninguna"],c:1,
+  e:"El ciclo semanal recog\u00eda el 46 % de la varianza; el s\u00e1bado, sin ventas, 26 100 \u00a3 por debajo del nivel.",s:"2.3.7"},
+ {q:"Una columna de n\u00fameros al azar qued\u00f3 s\u00e9ptima de 14 en importancia por impureza. \u00bfQu\u00e9 ense\u00f1a?",
+  o:["Que el azar predice","Que la importancia por impureza favorece a las variables con muchos valores; la permutación la dejó última","Que el bosque está mal entrenado","Que hay que quitar el colesterol"],c:1,
+  e:"Para decidir qu\u00e9 variables importan, la permutaci\u00f3n en datos no vistos es la medida fiable.",s:"2.5.1"},
+ {q:"Reentrenar el bosque cada mes no redujo el error de las ventas de oto\u00f1o de 2011. \u00bfPor qu\u00e9?",
+  o:["Porque se reentrenó mal","Porque el crecimiento superaba lo visto antes y los árboles no extrapolan","Porque faltaban datos de diciembre","Porque el bosque tenía pocos árboles"],c:1,
+  e:"Cualquier cambio en el proceso debe medirse; la intuici\u00f3n no basta.",s:"2.5.10"}
 ];
 P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
 const f=document.getElementById('f');

@@ -8,6 +8,13 @@ de Online Retail II.
 | Archivo | Origen | Cita |
 |---|---|---|
 | `mayoristas.csv` | Wholesale customers (440 clientes; gasto anual en unidades monetarias; canal 1 = Horeca, 2 = minorista; región 1 = Lisboa, 2 = Oporto, 3 = otras), sin cambios | Cardoso (2013), https://doi.org/10.24432/C5030X |
-| `clientes_rfm.csv` | Online Retail II, sin facturas anuladas (que empiezan por C), líneas con cantidad o precio no positivos ni líneas sin cliente. Por cliente: días desde su última compra hasta el 10/12/2011, número de facturas y suma de cantidad × precio | Chen (2012), https://doi.org/10.24432/C5CG6D |
+| `clientes_rfm.csv` | Online Retail II (sus dos hojas se solapan del 1 al 9/12/2010: esos días se toman solo de la primera), sin facturas anuladas (que empiezan por C), líneas con cantidad o precio no positivos ni líneas sin cliente. Por cliente: días desde su última compra hasta el 10/12/2011, número de facturas y suma de cantidad × precio | Chen (2012), https://doi.org/10.24432/C5CG6D |
 | `cestas.csv` | Online Retail II con los mismos filtros, solo artículos (códigos que empiezan por una cifra, sin gastos de envío ni otros cargos) y solo los 100 presentes en más facturas. Una fila por factura y artículo | Chen (2012), https://doi.org/10.24432/C5CG6D |
 | `productos.csv` | Descripción más frecuente de cada uno de esos 100 artículos | Chen (2012), https://doi.org/10.24432/C5CG6D |
+
+## Ficheros de código
+
+Los ficheros `.py` de esta carpeta son los listados del libro que preparan un caso
+(por ejemplo, `h_ventas.py` construye las variables de la serie de ventas). Los listados de
+ampliación del cuaderno los importan (`from h_ventas import X, y`) para no repetir la
+preparación. No hay que abrirlos ni modificarlos.
