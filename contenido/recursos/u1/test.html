@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U1-03 · Test de autoevaluación · IFCD093PO</title>
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header><div class="cod">IFCD093PO · Unidad 1 · U1-03 · Comprueba</div>
+<h1>Test de autoevaluación de la Unidad 1</h1></header>
+<main>
+<p>Diez preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
+<form id="f"></form>
+<button type="button" id="b">Corregir</button>
+<p id="nota" class="res"></p>
+</main>
+<footer>Recurso complementario del libro <em>Machine Learning aplicado usando Python</em> (IFCD093PO).</footer>
+<script>
+const P=[
+ {q:"¿Para qué sirve un entorno virtual de Python?",
+  o:["Para que Python funcione sin conexión","Para tener en cada proyecto su propia copia de las bibliotecas y evitar conflictos entre proyectos","Para ejecutar Python en el navegador","Para que el código vaya más rápido"],c:1,
+  e:"Se crea con python -m venv y se activa antes de instalar las bibliotecas del proyecto.",s:"1.1"},
+ {q:"¿Qué es un cuaderno Jupyter?",
+  o:["Un editor de hojas de cálculo","Un documento que mezcla texto, código y resultados, con celdas que se ejecutan por separado","Una biblioteca de gráficos","Un tipo de base de datos"],c:1,
+  e:"Es el formato habitual para explorar datos y compartir análisis que otros pueden volver a ejecutar.",s:"1.1"},
+ {q:"El crecimiento crec[i] se calcula entre los trimestres i e i+1. ¿Qué trimestre hay que usar para fecharlo?",
+  o:["El trimestre i","El trimestre i+1, el último de los dos","Cualquiera de los dos","El trimestre i−1"],c:1,
+  e:"Un desfase de uno al fechar resultados es uno de los errores más frecuentes con datos temporales.",s:"1.1"},
+ {q:"La media del paro de los «años 1950» en la tabla usa solo los cuatro trimestres de 1959. ¿Qué enseña?",
+  o:["Que en los cincuenta no había paro","Que un resumen hay que leerlo junto al número de datos que resume","Que la media está mal calculada","Que hay que borrar esa fila siempre"],c:1,
+  e:"Un promedio de cuatro datos no es comparable con uno de cuarenta.",s:"1.1"},
+ {q:"¿Por qué NumPy es mucho más rápido que un bucle de Python?",
+  o:["Porque usa la tarjeta gráfica","Porque opera con el array completo con código compilado, sin pasar por el intérprete en cada elemento","Porque redondea los resultados","Porque solo calcula una parte de los datos"],c:1,
+  e:"En el libro, la versión vectorizada fue entre 16 y 20 veces más rápida que el bucle con solo 203 datos.",s:"1.2.1"},
+ {q:"¿Qué hace pct_change(4) en una tabla trimestral?",
+  o:["Calcula el crecimiento de cuatro trimestres seguidos sumados","Compara cada trimestre con el mismo trimestre del año anterior","Divide los datos en cuatro partes","Redondea a cuatro decimales"],c:1,
+  e:"Así se elimina el efecto de la estación: es el crecimiento anual.",s:"1.2.2"},
+ {q:"¿Qué tienen en común todos los modelos de scikit-learn?",
+  o:["Que solo sirven para regresión","La misma interfaz: se crean con sus opciones, se ajustan con fit(X, y) y se usan con predict(X)","Que no necesitan datos","Que dan siempre el mismo resultado"],c:1,
+  e:"Cambiar un modelo por otro es cambiar una línea.",s:"1.2.3"},
+ {q:"Un modelo acierta casi todo en los datos con los que se entrenó. ¿Qué se puede concluir?",
+  o:["Que funcionará igual con datos nuevos","Nada todavía: hay que evaluarlo con datos que no ha visto","Que es el mejor modelo posible","Que no hace falta una referencia"],c:1,
+  e:"Lo que importa es la generalización. Evaluar con los datos de entrenamiento da una falsa sensación de éxito.",s:"1.3.2"},
+ {q:"Con datos temporales, ¿cómo se separan entrenamiento y prueba?",
+  o:["Al azar","Se entrena con el pasado y se prueba con el futuro","Se usan los mismos datos para las dos cosas","Se entrena con el futuro y se prueba con el pasado"],c:1,
+  e:"Así se simula el uso real: el modelo solo conoce lo ocurrido antes de lo que predice.",s:"1.3.2"},
+ {q:"En el caso del paro, la regla escrita a mano tuvo un error de 0,44 puntos y el modelo aprendido, de 0,45. ¿Qué conclusión saca el libro?",
+  o:["Que el aprendizaje automático no sirve","Que hay que comparar siempre con una referencia y con lo que ya se sabe; los dos reducen un tercio el error de no prever nada","Que el modelo está mal programado","Que la regla escrita a mano es siempre mejor"],c:1,
+  e:"El modelo aprendido tiene la ventaja de que se actualiza volviendo a entrenarlo con datos recientes.",s:"1.3.3"}
+];
+P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
+const f=document.getElementById('f');
+P.forEach((p,i)=>{const d=document.createElement('div');d.className='preg';
+ d.innerHTML='<p>'+(i+1)+'. '+p.q+'</p>'+p.o.map((o,j)=>'<label><input type="radio" name="p'+i+'" value="'+j+'"> '+o+'</label>').join('')+'<div class="fb" id="fb'+i+'"></div>';
+ f.append(d)});
+document.getElementById('b').onclick=()=>{let ok=0;
+ P.forEach((p,i)=>{const s=f.querySelector('input[name=p'+i+']:checked');const fb=document.getElementById('fb'+i);
+  const bien=s&&+s.value===p.c;if(bien)ok++;
+  fb.innerHTML=(bien?'<span class="ok">Correcto.</span> ':'<span class="mal">'+(s?'No es correcto.':'Sin responder.')+'</span> Respuesta: '+p.o[p.c]+'. ')+p.e+' <em>Repasa el apartado '+p.s+'.</em>'});
+ document.getElementById('nota').textContent='Aciertos: '+ok+' de '+P.length;};
+</script>
+</body>
+</html>

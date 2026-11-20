@@ -1,0 +1,4 @@
+codigo;tipo;titulo;destino
+u1-01;ejecuta;Python, NumPy, pandas y Matplotlib con datos de la economía;lab/notebooks/index.html?path=u1/python_bibliotecas.ipynb
+u1-02;explora;La regla frente al modelo aprendido: el paro y el crecimiento;recursos/u1/okun.html
+u1-03;compruebalo;Test de autoevaluación de la Unidad 1;recursos/u1/test.html
