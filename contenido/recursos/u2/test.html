@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U2-05 · Test de autoevaluación · IFCD093PO</title>
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header><div class="cod">IFCD093PO · Unidad 2 · U2-05 · Comprueba</div>
+<h1>Test de autoevaluación de la Unidad 2</h1></header>
+<main>
+<p>Doce preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
+<form id="f"></form>
+<button type="button" id="b">Corregir</button>
+<p id="nota" class="res"></p>
+</main>
+<footer>Recurso complementario del libro <em>Machine Learning aplicado usando Python</em> (IFCD093PO).</footer>
+<script>
+const P=[
+ {q:"Predecir cuántos días estará ingresado un paciente es un problema de…",
+  o:["Clasificación","Regresión","Aprendizaje no supervisado","Aprendizaje por refuerzo"],c:1,
+  e:"La respuesta es un número. Predecir si tiene o no una enfermedad sería clasificación.",s:"2.1"},
+ {q:"¿Por qué se construye el modelo dentro de un pipeline que también prepara los datos?",
+  o:["Porque es más rápido","Porque así la preparación se aprende solo con los datos de entrenamiento y nada de la prueba se filtra al modelo","Porque scikit-learn lo exige","Porque elimina los datos que faltan"],c:1,
+  e:"Rellenar, codificar y escalar con todos los datos daría al modelo información de la prueba.",s:"2.1"},
+ {q:"En el caso del corazón, el modelo detecta 32 de 42 enfermos. ¿Qué medida es 32/42?",
+  o:["La especificidad","La sensibilidad","La precisión","El acierto"],c:1,
+  e:"La sensibilidad es VP/(VP+FN): la proporción de enfermos que el modelo detecta.",s:"2.2.1"},
+ {q:"Al bajar el umbral de 0,5 a 0,2 en el caso del corazón, ¿qué ocurrió?",
+  o:["Mejoraron la sensibilidad y la especificidad","Subió la sensibilidad (41 de 42 enfermos) y bajó la especificidad (13 falsas alarmas)","No cambió nada","Bajó el área bajo la curva ROC"],c:1,
+  e:"El umbral reparte los errores entre falsos negativos y falsos positivos; el AUC no depende de él.",s:"2.2.2"},
+ {q:"Con cinco particiones, el acierto varió entre el 81,7 % y el 86,9 %. ¿Qué enseña?",
+  o:["Que el modelo es inestable y no sirve","Que con 303 pacientes diferencias de dos o tres puntos entre modelos no significan nada","Que hay que usar siempre una sola partición","Que la validación cruzada falla"],c:1,
+  e:"La validación cruzada muestra cuánto depende el resultado de qué pacientes caen en la prueba.",s:"2.2.3"},
+ {q:"En el crédito, aceptar a un mal pagador cuesta 5 y rechazar a uno bueno, 1. ¿Qué umbral de probabilidad de impago minimiza el coste esperado?",
+  o:["0,5","1/6","5/6","0,2"],c:1,
+  e:"Se rechaza cuando 5·p > 1·(1−p), es decir, p > 1/6. En el libro, el coste bajó de 283 a 141.",s:"2.3.1"},
+ {q:"En la regresión logística, ¿qué significa que un factor (e^β) valga 1,98?",
+  o:["Que el riesgo se duplica siempre por esa causa","Que las odds de impago se multiplican por 1,98 respecto a la categoría de referencia, como asociación en la muestra","Que la probabilidad es 1,98","Que la variable no importa"],c:1,
+  e:"Los coeficientes indican asociaciones, no causas, y algunos pueden parecer contradictorios.",s:"2.3.1"},
+ {q:"Para prever las ventas de mañana, ¿qué variables se pueden usar?",
+  o:["Las ventas de mañana","Solo lo que se sabe la víspera: ventas pasadas, medias móviles y el calendario","Cualquier columna de la tabla","Las ventas de la semana siguiente"],c:1,
+  e:"Usar información del futuro daría un error muy pequeño en la prueba y un modelo inútil en la realidad.",s:"2.3.2"},
+ {q:"El árbol sin límite de profundidad acertó el 100 % en entrenamiento y tuvo el peor AUC en prueba (0,73). ¿Por qué?",
+  o:["Por un error del programa","Porque memorizó los datos de entrenamiento: sobreajuste","Porque los árboles no sirven para clasificar","Porque le faltaban datos de entrenamiento"],c:1,
+  e:"El árbol de profundidad 3, con ocho hojas, generalizó mucho mejor y además se puede leer.",s:"2.4.1"},
+ {q:"¿Qué hace un bosque aleatorio?",
+  o:["Un árbol muy profundo","Promedia cientos de árboles entrenados con muestras distintas y subconjuntos aleatorios de variables","Elige el mejor árbol de todos","Construye árboles que corrigen los errores de los anteriores"],c:1,
+  e:"Corregir los errores de los anteriores es la idea del gradient boosting.",s:"2.5"},
+ {q:"¿Qué mide la importancia por permutación?",
+  o:["Cuántas veces aparece una variable en el árbol","Cuánto empeora el modelo en prueba al barajar los valores de una variable","La correlación entre dos variables","El tiempo de entrenamiento"],c:1,
+  e:"Sin el valor de página, el AUC del bosque caía 27 puntos; el resto de variables apenas contaban.",s:"2.5"},
+ {q:"En las ventas, el bosque aleatorio redujo el error medio de 12 410 £ a 10 360 £. ¿Qué no consiguió?",
+  o:["Seguir el ciclo semanal","Anticipar los picos de un solo día, como el de 200 900 £","Mejorar a la regresión lineal","Superar a la referencia"],c:1,
+  e:"Una previsión útil para planificar personal y existencias no lo es necesariamente para comprometer cifras día a día.",s:"2.5.1"}
+];
+P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
+const f=document.getElementById('f');
+P.forEach((p,i)=>{const d=document.createElement('div');d.className='preg';
+ d.innerHTML='<p>'+(i+1)+'. '+p.q+'</p>'+p.o.map((o,j)=>'<label><input type="radio" name="p'+i+'" value="'+j+'"> '+o+'</label>').join('')+'<div class="fb" id="fb'+i+'"></div>';
+ f.append(d)});
+document.getElementById('b').onclick=()=>{let ok=0;
+ P.forEach((p,i)=>{const s=f.querySelector('input[name=p'+i+']:checked');const fb=document.getElementById('fb'+i);
+  const bien=s&&+s.value===p.c;if(bien)ok++;
+  fb.innerHTML=(bien?'<span class="ok">Correcto.</span> ':'<span class="mal">'+(s?'No es correcto.':'Sin responder.')+'</span> Respuesta: '+p.o[p.c]+'. ')+p.e+' <em>Repasa el apartado '+p.s+'.</em>'});
+ document.getElementById('nota').textContent='Aciertos: '+ok+' de '+P.length;};
+</script>
+</body>
+</html>

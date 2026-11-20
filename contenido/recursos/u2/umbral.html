@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U2-01 · El umbral y los costes: matriz de confusión y curva ROC · IFCD093PO</title>
+<link rel="stylesheet" href="../estilo.css">
+<style>
+.rej{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 22px;margin:8px 0}
+.rej label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:15px;margin:0}
+.rej input[type=range]{width:140px}
+.rej output{min-width:50px;text-align:right;font-variant-numeric:tabular-nums}
+.zona{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+table.cm{border-collapse:collapse;font-variant-numeric:tabular-nums;margin:8px 0}
+table.cm td,table.cm th{border:1px solid #CFE0F2;padding:6px 12px;text-align:center}
+table.cm td.ok{background:#EEF4FA;font-weight:700}
+table.cm td.ko{background:#FBEDE3;font-weight:700}
+.res{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+.res div{background:#EEF4FA;padding:8px 14px;min-width:120px}
+.res b{display:block;font-size:22px;color:#1F5FA8;font-variant-numeric:tabular-nums}
+canvas{width:320px;height:320px;border:1px solid #ddd}
+.nota{font-size:14px;color:#555}
+</style>
+</head>
+<body>
+<header><div class="cod">IFCD093PO · Unidad 2 · U2-01 · Explora</div>
+<h1>El umbral y los costes: matriz de confusión y curva ROC</h1></header>
+<main>
+<p>Son los 91 pacientes de prueba del apartado 2.2, con la probabilidad de enfermedad coronaria que les
+asigna la regresión logística. Mueve el umbral a partir del cual un paciente se considera enfermo y
+fija cuánto cuesta cada tipo de error. La página calcula la matriz de confusión, la sensibilidad, la
+especificidad y el coste total, y marca el punto en la curva ROC.</p>
+<div class="rej">
+<label>Umbral <input type="range" id="u" min="0.01" max="0.99" step="0.01" value="0.5"><output id="ou"></output></label>
+<label>Coste de un falso negativo <input type="range" id="cfn" min="1" max="20" step="1" value="5"><output id="ofn"></output></label>
+<label>Coste de un falso positivo <input type="range" id="cfp" min="1" max="20" step="1" value="1"><output id="ofp"></output></label>
+</div>
+<div class="zona">
+<div>
+<table class="cm"><tr><th></th><th>Predice enfermo</th><th>Predice sano</th></tr>
+<tr><th>Enfermo</th><td class="ok" id="vp"></td><td class="ko" id="fn"></td></tr>
+<tr><th>Sano</th><td class="ko" id="fp"></td><td class="ok" id="vn"></td></tr></table>
+<div class="res"><div>Sensibilidad<b id="se"></b></div><div>Especificidad<b id="es"></b></div><div>Coste total<b id="co"></b></div></div>
+<p class="nota">Umbral de menor coste con estos costes: <b id="mejor"></b></p>
+</div>
+<canvas id="c" width="320" height="320"></canvas>
+</div>
+<p class="nota">Prueba a subir el coste de un falso negativo y observa cómo cambia el umbral de menor coste. Con
+solo 91 pacientes de prueba ese umbral cambia a saltos y, con otros pacientes, sería otro: en la práctica se elige
+con validación cruzada o con un conjunto de validación, nunca con los datos de prueba. El área bajo la curva
+(0,941) no cambia con el umbral: mide lo bien que el modelo ordena a los pacientes, no la decisión que se toma
+con ese orden.</p>
+</main>
+<footer>Recurso complementario del libro <em>Machine Learning aplicado usando Python</em> (IFCD093PO). Datos: Heart Disease, UCI (Janosi, Steinbrunn, Pfisterer y Detrano, 1989), CC BY 4.0.</footer>
+<script>
+const D=[[1,0.3404],[1,0.9184],[1,0.3701],[0,0.0511],[1,0.9644],[1,0.3003],[1,0.68],[1,0.9898],[0,0.0352],[1,0.8506],[0,0.0776],[1,0.6546],[0,0.2327],[1,0.7116],[0,0.4503],[0,0.4199],[1,0.89],[1,0.7529],[1,0.9655],[0,0.0346],[0,0.0803],[0,0.0706],[0,0.7696],[1,0.8851],[0,0.3704],[0,0.0246],[0,0.0078],[1,0.2636],[0,0.534],[1,0.0913],[0,0.0473],[0,0.1043],[0,0.1428],[1,0.9922],[1,0.4175],[1,0.9411],[1,0.97],[1,0.7126],[0,0.1432],[1,0.9587],[0,0.6193],[1,0.9893],[0,0.2041],[0,0.4321],[0,0.1186],[1,0.9106],[1,0.8733],[0,0.2556],[0,0.1442],[1,0.9875],[0,0.6166],[0,0.0585],[0,0.0326],[1,0.9982],[1,0.9333],[0,0.025],[1,0.6203],[0,0.1504],[0,0.0096],[0,0.0226],[0,0.0841],[0,0.0796],[1,0.8436],[0,0.0302],[0,0.0992],[0,0.0414],[1,0.9418],[1,0.4493],[0,0.1431],[0,0.0205],[0,0.0362],[0,0.0411],[0,0.5339],[1,0.785],[1,0.3052],[0,0.0806],[1,0.4669],[1,0.4699],[0,0.1063],[0,0.0387],[1,0.7877],[1,0.794],[0,0.0335],[0,0.0541],[1,0.905],[0,0.8075],[1,0.5641],[0,0.051],[1,0.7493],[1,0.9237],[0,0.0911]];
+const $=id=>document.getElementById(id),cv=$('c'),cx=cv.getContext('2d');
+function cm(u){let vp=0,fn=0,fp=0,vn=0;D.forEach(([y,p])=>{if(y){p>=u?vp++:fn++}else{p>=u?fp++:vn++}});return{vp,fn,fp,vn}}
+const pts=[...new Set(D.map(d=>d[1]))].sort((a,b)=>b-a);
+const roc=[[0,0]].concat(pts.map(u=>{const m=cm(u);return[m.fp/(m.fp+m.vn),m.vp/(m.vp+m.fn)]}));roc.push([1,1]);
+const f=v=>v.toLocaleString('es-ES',{minimumFractionDigits:3,maximumFractionDigits:3});
+function calcula(){const u=+$('u').value,a=+$('cfn').value,b=+$('cfp').value;
+ $('ou').textContent=u.toFixed(2).replace('.',',');$('ofn').textContent=a;$('ofp').textContent=b;
+ const m=cm(u);['vp','fn','fp','vn'].forEach(k=>$(k).textContent=m[k]);
+ $('se').textContent=f(m.vp/(m.vp+m.fn));$('es').textContent=f(m.vn/(m.vn+m.fp));$('co').textContent=a*m.fn+b*m.fp;
+ let mu=0.5,mc=1e9;for(let v=0.01;v<=0.99;v+=0.01){const k=cm(v),c=a*k.fn+b*k.fp;if(c<mc){mc=c;mu=v}}
+ $('mejor').textContent=mu.toFixed(2).replace('.',',')+' (coste '+mc+')';
+ const W=320,P=30,X=x=>P+(W-P-10)*x,Y=y=>W-P-(W-P-10)*y;cx.clearRect(0,0,W,W);
+ cx.strokeStyle='#bbb';cx.setLineDash([4,4]);cx.beginPath();cx.moveTo(X(0),Y(0));cx.lineTo(X(1),Y(1));cx.stroke();cx.setLineDash([]);
+ cx.strokeStyle='#1F5FA8';cx.lineWidth=2;cx.beginPath();let px=0,py=0;roc.forEach(([x,y],i)=>{if(i===0)cx.moveTo(X(x),Y(y));else{cx.lineTo(X(x),Y(py));cx.lineTo(X(x),Y(y))}px=x;py=y});cx.stroke();
+ const x=m.fp/(m.fp+m.vn),y=m.vp/(m.vp+m.fn);cx.fillStyle='#E08A1E';cx.beginPath();cx.arc(X(x),Y(y),6,0,7);cx.fill();
+ cx.fillStyle='#555';cx.font='12px sans-serif';cx.fillText('1 − especificidad',W/2-40,W-6);cx.save();cx.translate(12,W/2+30);cx.rotate(-Math.PI/2);cx.fillText('sensibilidad',0,0);cx.restore()}
+['u','cfn','cfp'].forEach(k=>$(k).oninput=calcula);calcula();
+</script>
+</body>
+</html>
