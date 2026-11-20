@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>U3-05 · Test de autoevaluación · IFCD093PO</title>
+<link rel="stylesheet" href="../estilo.css">
+</head>
+<body>
+<header><div class="cod">IFCD093PO · Unidad 3 · U3-05 · Comprueba</div>
+<h1>Test de autoevaluación de la Unidad 3</h1></header>
+<main>
+<p>Doce preguntas sobre la unidad. Al corregir verás la explicación y el apartado del libro donde
+repasarla. Tus respuestas no se guardan ni se envían a ningún sitio.</p>
+<form id="f"></form>
+<button type="button" id="b">Corregir</button>
+<p id="nota" class="res"></p>
+</main>
+<footer>Recurso complementario del libro <em>Machine Learning aplicado usando Python</em> (IFCD093PO).</footer>
+<script>
+const P=[
+ {q:"¿Qué distingue al aprendizaje no supervisado del supervisado?",
+  o:["Que usa redes neuronales","Que los datos no traen una respuesta que aprender: se busca su estructura","Que no necesita datos","Que solo sirve para imágenes"],c:1,
+  e:"Sin respuesta y, el objetivo es describir: grupos, relaciones o una representación más sencilla.",s:"3.1"},
+ {q:"En los mayoristas, ¿para qué se usa el canal (Horeca o minorista) si no entra en el agrupamiento?",
+  o:["Para nada","Para comprobar después si los grupos descubiertos tienen sentido","Para elegir el número de variables","Para estandarizar"],c:1,
+  e:"Una etiqueta que no se usó para agrupar permite una evaluación externa, por ejemplo con el ARI.",s:"3.1.1"},
+ {q:"La silueta de un caso vale −0,4. ¿Qué indica?",
+  o:["Que está muy bien agrupado","Que probablemente está mal asignado: está más cerca de otro grupo que del suyo","Que es ruido","Que el grupo es grande"],c:1,
+  e:"s(i) va de −1 (mal asignado) a 1 (bien separado).",s:"3.2"},
+ {q:"Sin logaritmos, la silueta subió de 0,29 a 0,567 y el ARI con el canal bajó de 0,514 a 0,213. ¿Qué se concluye?",
+  o:["Que sin logaritmos el agrupamiento es mejor","Que la silueta premiaba separar a unos pocos clientes enormes: una medida interna alta no garantiza grupos útiles","Que el ARI está mal calculado","Que hay que usar siempre dos grupos"],c:1,
+  e:"Las medidas se miran juntas y con lo que se sabe del problema.",s:"3.2"},
+ {q:"¿Qué mide la estabilidad de un agrupamiento?",
+  o:["El tiempo de cálculo","Si se obtienen los mismos grupos al repetir el agrupamiento con otra muestra de los datos","La distancia entre centros","El número de iteraciones"],c:1,
+  e:"Con tres grupos, la estabilidad media fue 0,883, pero en alguna submuestra cayó a 0,421.",s:"3.2"},
+ {q:"¿Por qué k-medias se ejecuta con varios inicios (n_init)?",
+  o:["Para usar más memoria","Porque solo garantiza un mínimo local de la inercia y el resultado depende de los centros iniciales","Para elegir k","Para eliminar el ruido"],c:1,
+  e:"Se queda con el inicio que da menor suma de distancias al cuadrado.",s:"3.3"},
+ {q:"¿Qué algoritmo deja sin asignar los puntos aislados y no necesita fijar k?",
+  o:["k-medias","DBSCAN","La mezcla gaussiana","El jerárquico de Ward"],c:1,
+  e:"DBSCAN define los grupos como regiones densas; con eps 0,5, su «ruido» fueron 90 grandes clientes.",s:"3.3"},
+ {q:"Con los clientes RFM, el BIC de la mezcla gaussiana bajaba sin parar. ¿Por qué?",
+  o:["Porque hay muchos grupos reales","Porque muchos clientes repiten el mismo valor de frecuencia (una, dos o tres compras) y algunas componentes se concentran sobre ellos sin varianza","Porque el BIC siempre baja","Porque faltan datos"],c:1,
+  e:"Antes de elegir un algoritmo hay que mirar los datos; con el gasto continuo de los mayoristas el BIC tuvo su mínimo en tres componentes.",s:"3.3.1"},
+ {q:"¿Qué busca el biclustering?",
+  o:["Dos grupos de casos","Bloques de filas y columnas que se comportan de forma coherente, como clientes y los productos que compran","Duplicar los datos","Reducir las filas a la mitad"],c:1,
+  e:"En la tienda salieron seis bloques de clientes y productos con un tema reconocible.",s:"3.4"},
+ {q:"En el rollo suizo, ¿qué método conservó el orden a lo largo de la hoja (correlación de 1,0)?",
+  o:["PCA","Isomap","t-SNE","Ninguno"],c:1,
+  e:"Isomap mide las distancias a lo largo de la variedad. PCA superpuso las vueltas (0,213) y t-SNE cortó la hoja en trozos (0,837).",s:"3.5"},
+ {q:"Una regla A → B tiene confianza 0,15 y lift 0,92. ¿Qué significa?",
+  o:["Que A y B se compran mucho juntos","Que B aparece con A algo menos de lo esperable por azar: la regla no aporta nada","Que la regla es fuerte","Que el soporte es alto"],c:1,
+  e:"Es el caso del expositor de tartas y el portavelas: dos superventas que coinciden solo porque cada uno aparece en muchas facturas.",s:"3.6"},
+ {q:"Dos de cada tres facturas con el despertador verde llevan también el rojo. ¿Qué medida es esa?",
+  o:["El soporte","La confianza de la regla verde → rojo","El lift","La silueta"],c:1,
+  e:"Confianza = P(A y B)/P(A) = 0,67. El lift, 17,5, dice cuántas veces más probable es el rojo con el verde que en general.",s:"3.6"}
+];
+P.forEach((p,i)=>{const k=(i*3+1)%4;p.o=[...p.o.slice(k),...p.o.slice(0,k)];p.c=(p.c-k+4)%4});  // reparte la respuesta correcta
+const f=document.getElementById('f');
+P.forEach((p,i)=>{const d=document.createElement('div');d.className='preg';
+ d.innerHTML='<p>'+(i+1)+'. '+p.q+'</p>'+p.o.map((o,j)=>'<label><input type="radio" name="p'+i+'" value="'+j+'"> '+o+'</label>').join('')+'<div class="fb" id="fb'+i+'"></div>';
+ f.append(d)});
+document.getElementById('b').onclick=()=>{let ok=0;
+ P.forEach((p,i)=>{const s=f.querySelector('input[name=p'+i+']:checked');const fb=document.getElementById('fb'+i);
+  const bien=s&&+s.value===p.c;if(bien)ok++;
+  fb.innerHTML=(bien?'<span class="ok">Correcto.</span> ':'<span class="mal">'+(s?'No es correcto.':'Sin responder.')+'</span> Respuesta: '+p.o[p.c]+'. ')+p.e+' <em>Repasa el apartado '+p.s+'.</em>'});
+ document.getElementById('nota').textContent='Aciertos: '+ok+' de '+P.length;};
+</script>
+</body>
+</html>
